@@ -95,7 +95,7 @@ useEffect에는 2번째 인자가 존재한다.  여기에 들어가는 배열�
 
 만약에 인자에 아무것도 없다면 마운트에서 실행되고 마운트 해제에서는 정리한다.
 
-### useContext()
+### **useContext()**
 
 ```js
     const context = useContext(Context);
@@ -105,4 +105,199 @@ context object를 받아서 현재 context 값을 반환한다.
 
 provider가 업데이트되면 훅이 실행되어최신의 값으로 변경한다.
 
-## Basic Hooks
+## Additional Hooks
+
+### **useReducer**
+
+우리가 리덕스에서 많이 보던 Reducer와 비슷하다고 생각하면 된다. 그렇다고 한다.
+
+```js
+    const initialState = {count: 0};
+    
+    function reducer(state, action) {
+      switch (action.type) {
+        case 'increment':
+          return {count: state.count + 1};
+        case 'decrement':
+          return {count: state.count - 1};
+        default:
+          throw new Error();
+      }
+    }
+    
+    function Counter({initialCount}) {
+      const [state, dispatch] = useReducer(reducer, initialState);
+      return (
+        <>
+          Count: {state.count}
+          <button onClick={() => dispatch({type: 'increment'})}>+</button>
+          <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+        </>
+      );
+    }
+```
+
+#### Specifying the initial state
+
+2번째 인자로 초기화 state를 넘겨준다.(간단하게 초기화하는 방법)
+
+```js
+    const [state, dispatch] = useReducer(
+        reducer,
+        {count: initialCount}
+      );
+```
+
+#### Lazy initialization
+
+만약 느슨하게 초기 state를 만들고 싶다면 3번째 인자로 init function을 넘기자
+
+그러면 init(initialArg) 이런식으로 호출이 될 것이다.
+
+```js
+    function init(initialCount) {
+      return {count: initialCount};
+    }
+    
+    function reducer(state, action) {
+      switch (action.type) {
+        case 'increment':
+          return {count: state.count + 1};
+        case 'decrement':
+          return {count: state.count - 1};
+        case 'reset':
+          return init(action.payload);
+        default:
+          throw new Error();
+      }
+    }
+    
+    function Counter({initialCount}) {
+      const [state, dispatch] = useReducer(reducer, initialCount, init);
+      return (
+        <>
+          Count: {state.count}
+          <button
+            onClick={() => dispatch({type: 'reset', payload: initialCount})}>
+    
+            Reset
+          </button>
+          <button onClick={() => dispatch({type: 'increment'})}>+</button>
+          <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+        </>
+      );
+    }
+```
+
+#### Bailing out of a dispatch
+
+useState와 동일하게 같은 값을 넘기게 되면 비교를 해서 자식으로 렌더링과 effect를 실행하는 것을 막는다.
+
+
+### **useCallback**
+
+```js
+    const memoizedCallback = useCallback(
+      () => {
+        doSomething(a, b);
+      },
+      [a, b],
+    );
+```
+
+> Returns a memoized callback.
+
+인라인 콜백과 입력 배열을 전달합니다. useCallback은 입력 중 하나가 변경된 경우에만 변경되는 콜백의 memoized 버전을 반환합니다
+
+즉 a 또는 b가 변경이 되었다면 함수 결과를 반환한다. 
+
+동일한 표현
+
+```js
+    useCallback(fn, inputs) //is equivalent to 
+    useMemo(() => fn, inputs).
+```
+
+### **useMemo**
+
+```js
+    const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+```
+
+> Returns a memoized value.
+
+렌더링시 useMemo에 전달된 함수가 실행이 된다.
+
+즉, 사용하는데 있어서 조심해야한다.  렌더링동안 하지않는 것을 하지 않아야한다. sideeffect는 useEffect를 사용해야하는 것이다.
+
+useEffect와 동일하게 배열이 넘어가지 않을 경우 매순간 첫번째 매개변수를 타게 된다.
+
+성능 최적화를 위해서 useMemo를 사용할 수 있을 것으로 생각이 된다.
+
+### useRef
+
+```js
+    function TextInputWithFocusButton() {
+      const inputEl = useRef(null);
+      const onButtonClick = () => {
+        // `current` points to the mounted text input element
+        inputEl.current.focus();
+      };
+      return (
+        <>
+          <input ref={inputEl} type="text" />
+          <button onClick={onButtonClick}>Focus the input</button>
+        </>);
+    }
+```
+
+### useImperativeHandle
+
+```js
+    useImperativeHandle(ref, createHandle, [inputs])
+```
+
+useImperativeHandle은 ref를 사용할 때 부모 구성 요소에 노출되는 인스턴스 값을 사용자 정의합니다.
+
+```js
+    function FancyInput(props, ref) {
+      const inputRef = useRef();
+      useImperativeHandle(ref, () => ({
+        focus: () => {
+          inputRef.current.focus();
+        }
+      }));
+      return <input ref={inputRef} ... />;
+    }
+    FancyInput = forwardRef(FancyInput);
+```
+
+### **useLayoutEffect**
+
+서명은 useEffect와 동일하지만 모든 DOM 변이 후에 동 기적으로 시작됩니다. 
+
+이것을 사용하여 DOM에서 레이아웃을 읽고 동 기적으로 다시 렌더링합니다.
+
+### **useDebugValue**
+
+useDebugValue는 React DevTools에서 사용자 정의 후크 레이블을 표시하는 데 사용할 수 있습니다.
+
+```js
+    function useFriendStatus(friendID) {
+      const [isOnline, setIsOnline] = useState(null);
+    
+      // ...
+    
+      // Show a label in DevTools next to this Hook
+      // e.g. "FriendStatus: Online"
+      useDebugValue(isOnline ? 'Online' : 'Offline');
+    
+      return isOnline;
+    }
+```
+
+#### Defer formatting debug values
+
+```js
+    useDebugValue(date, date => date.toDateString());
+```
