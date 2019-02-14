@@ -1,135 +1,38 @@
-# simple-react-server
+# react-hook-sample
 
-Create very very Simple react repo for making library
+## Basic Hooks
 
-## :zap: Start Server
+### useState(initialState)
 
-```
-  npm run dev
-```
+초기값을 처음에 선언해서 넣어준다.
 
+우리가 많이 사용하던 state 초기화 작업과 동일하다.
 
-## :zap: Setting List
+모든 Hook은 2개의 인자를 배열로 받아온다. 
 
-- .editorconfig
-- eslint
-- eslint-prettier
-- webpack.config.js
-- vscode / settings.json
-- React, ReactDom
+    const [state, setState] = useState(initialState);
 
-## .editorconfig
+state는 현재 값이 들어있는 변수 setState는 변수를 변경하는 함수이다.
 
-Create `.editorconfig` file and setting this.
+**리렌더링이 될 경우 useState에 의해 반환 된 첫 번째 값은 항상 업데이트를 적용한 후 가장 최근 상태가 된다.**
 
-```js
-root = true
+#### Functional updates
 
-[*]
+역시나 동일하게 인자로 함수를 넣을 수 있다.  순수함수 답다.
 
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
-indent_style = space
-indent_size = 2
-trim_trailing_whitespace = true
-```
+기존에 우리가 사용하던 setState 메소드와는 달라서 자동으로 병합을 시켜주지 않는다. 
 
-If you cooperate with other people. It is requied.
+즉 우리가 병합을 해줘야한다.
 
-## eslint
+    setState(prevState => {
+      // Object.assign would also work
+      return {...prevState, ...updatedValues};
+    });
 
-As you know, `eslint` is pluggable linting utility for JavaScript and JSX
+#### Lazy initial state
 
-I use `eslint --init`
+initial state에 역시 함수를 사용할수 있다. 리액트의 표현으로는 값 비싼 게산이라면 함수를 사용해서 표현하라고 한다.
 
-```
-  npx eslint --init
+#### Bailing out of a state update
 
-  Use a popular style guide // choose
-  Standard // choose
-  JSON // choose
-  Yes // choose
-  // And Download Dependencies and Create eslint file
-```
-
-> npx is a very cool way to run Node code, and provides many useful features
-
-We should use React, ReacDom, React-Hook
-
-Add eslint-plugin-react
-
-```js
-{
-    "extends": ["standard", "plugin:react/recommended"],
-    "plugins": [
-        "react-hooks"
-    ],
-    "rules": {
-        "react-hooks/rules-of-hooks": "error"
-    }
-}
-```
-
-
-Create `.eslintignore` file
-
-```
-node_modules
-public
-
-*.config.js
-```
-
-
-## webpack.config.js
-
-```js
-module.exports = {
-    entry: './src/index.js',
-    output: {
-        path: __dirname + '/public/',
-        filename: 'bundle.js'
-    },
-
-    // You have to add this option
-    // none, development, production
-    mode: 'development',
-
-    devServer: {
-        inline: true, //Hot Module
-        port: 3000,
-        contentBase: __dirname + '/public/'
-    },
-
-    // We can use ES6
-    module: {
-        rules: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel-loader',
-                    exclude: /node_modules/,
-                    query: {
-                        cacheDirectory: true,
-                        presets: ['es2015', 'react']
-                    }
-                }
-            ]
-        }
-};
-```
-
-## vscode / settings.json
-
-```js
-{
-    "eslint.autoFixOnSave": true,
-    "prettier.eslintIntegration": true
-}
-```
-
-## React, ReactDom
-
-```
-  npm i react react-dom
-```
+같은 값을 다시 업데이트를 하더라도 리액트에서 자식을 리렌더링하거나 effect를 발생시키지 않는다.(Object.is를 사용해서 비교했다고 함)
