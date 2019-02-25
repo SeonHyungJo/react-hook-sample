@@ -370,3 +370,7 @@ useEffect(
 ```js
     useDebugValue(date, date => date.toDateString());
 ```
+
+#### Reference
+
+-[usehooks](https://usehooks.com/)
