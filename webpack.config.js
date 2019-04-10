@@ -1,34 +1,110 @@
-module.exports = {
-  // 엔트리 포인트를 잡아준다.
-  entry: './src/index.js',
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-  // 엔트리를 기준으로 관련 모듈을 번들링한다.
-  output: {
-    path: __dirname + '/public/',
-    filename: 'bundle.js'
-  },
-
-  mode: 'development',
-
-  // 서버관련 설정을 진행
-  devServer: {
-    inline: true,
-    port: 3000,
-    contentBase: __dirname + '/public/'
-  },
-
-  // react es6 기준으로 작성을 함에 따라 트랜스파일링을 해준다.
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          cacheDirectory: true,
-          presets: ['es2015', 'react']
+module.exports = (env, { mode = 'development' }) => {
+  const config = {
+    mode,
+    entry: {
+      app: './src/index.tsx'
+    },
+    devtool: '',
+    resolve: {
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx|tsx|ts)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript'
+              ],
+              plugins: [
+                '@babel/plugin-external-helpers',
+                '@babel/plugin-proposal-class-properties',
+                '@babel/plugin-proposal-object-rest-spread'
+              ]
+            }
+          }
         }
-      }
+      ]
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'index.js',
+      libraryTarget: 'umd',
+      publicPath: '/dist/',
+      umdNamedDefine: true
+    },
+    optimization: {
+      mangleWasmImports: true,
+      mergeDuplicateChunks: true,
+      minimize: true,
+      nodeEnv: 'production'
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"production"'
+      })
     ]
   }
+
+  /**
+   * If in development mode adjust the config accordingly
+   */
+  if (mode === 'development') {
+    config.devtool = 'source-map'
+    config.output = {
+      filename: '[name]/index.js'
+    }
+    config.module.rules.push({
+      loader: 'source-map-loader',
+      test: /\.js$/,
+      exclude: /node_modules/,
+      enforce: 'pre'
+    })
+    config.plugins = [
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': '"development"'
+      }),
+      new HtmlWebpackPlugin({
+        filename: path.resolve(__dirname, 'dist/index.html'),
+        template: path.resolve(__dirname, 'public', 'index.html')
+      }),
+      new webpack.HotModuleReplacementPlugin()
+    ]
+    config.devServer = {
+      contentBase: path.resolve(__dirname, 'dist'),
+      publicPath: '/',
+      stats: {
+        colors: true,
+        hash: false,
+        version: false,
+        timings: true,
+        assets: true,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: true,
+        warnings: false,
+        publicPath: false
+      }
+    }
+    config.optimization = {
+      mangleWasmImports: true,
+      mergeDuplicateChunks: true,
+      minimize: false,
+      nodeEnv: 'development'
+    }
+  }
+  return config
 }
