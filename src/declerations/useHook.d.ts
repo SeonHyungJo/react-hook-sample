@@ -1,4 +1,4 @@
 export interface UseHookProps {
-  list?: Array<number>;
+  list?: number[];
   //onClick?: (e: React.SyntheticEvent) => any | Function;
 }
