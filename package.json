@@ -1,10 +1,10 @@
 {
-  "name": "simple-react-server",
-  "version": "0.0.1",
-  "description": "Basic wepack-dev-setting repo for making simple project",
-  "main": "src/index.js",
+  "name": "react-hook-sample",
+  "version": "0.0.2",
+  "description": "I wanna useHook",
+  "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --hot",
+    "dev": "webpack-dev-server --open --colors --hot --mode development",
     "lint": "eslint **/*.js",
     "lint:fix": "prettier-eslint **/*.js --write",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -38,6 +38,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1",
+    "prop-types": "^15.7.2",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.1.14"

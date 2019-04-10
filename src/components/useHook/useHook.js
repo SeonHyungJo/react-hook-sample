@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback, useLayoutEffect } from 'react'
+import PropTypes from 'prop-types'
 
-const DiffMemo = ({ list }) => {
+const useHook = ({ list }) => {
   const [count, setCount] = useState(0)
   // 일반적으로 사용하게 되면 ReRender시에 무족건 작동합니다.
   const normalSort = list.sort((a, b) => a - b)
@@ -52,4 +53,8 @@ const DiffMemo = ({ list }) => {
   )
 }
 
-export default DiffMemo
+useHook.propTypes = {
+  list: PropTypes.array
+}
+
+export default useHook
