@@ -13,12 +13,16 @@
     "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": false,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    
   },
   "include": [
     "./src/"
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "rules":{
+    "indent": [true, "spaces", 2]
+  }
 }
