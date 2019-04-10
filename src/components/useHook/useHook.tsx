@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useMemo, useCallback, useLayoutEffect } from 'react'
-import PropTypes from 'prop-types'
+import { UseHookProps } from '../../declerations/useHook';
 
-const useHook = ({ list }) => {
+const useHook = (props: UseHookProps) => {
   const [count, setCount] = useState(0)
   // 일반적으로 사용하게 되면 ReRender시에 무족건 작동합니다.
-  const normalSort = list.sort((a, b) => a - b)
+  const normalSort = props.list.sort((a, b) => a - b)
 
   // useCallback과 useMemo와 비슷한 듯 비슷하지 않음
   // useCallback과 useMemo의 순서를 굳이 따지자면 소스를 적는 순서이다.
   useCallback(
-    console.log('useCallback'),
+    function(){ 
+      console.log('useCallback') 
+    },
     [count]
   )
 
@@ -18,7 +20,7 @@ const useHook = ({ list }) => {
   const sort = useMemo(
     () => {
       console.log('useMemo')
-      return list.sort((a, b) => a - b)
+      return props.list.sort((a: number, b: number) => a - b)
     },
     [count] // 다음과 같이 list의 변화가 일어날 때만 렌더하고 변화가 없으면 기억된 내용을 이용
   )
@@ -53,8 +55,8 @@ const useHook = ({ list }) => {
   )
 }
 
-useHook.propTypes = {
-  list: PropTypes.array
-}
+useHook.defaultProps = {
+  label: [2, 434, 34, 24, 643, 123]
+};
 
 export default useHook
