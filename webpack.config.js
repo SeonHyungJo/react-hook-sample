@@ -27,7 +27,7 @@ module.exports = (env, { mode = 'development' }) => {
               ],
               plugins: [
                 '@babel/plugin-transform-runtime',
-                // '@babel/plugin-external-helpers',
+                //'@babel/plugin-external-helpers',
                 '@babel/plugin-proposal-class-properties',
                 '@babel/plugin-proposal-object-rest-spread'
               ]

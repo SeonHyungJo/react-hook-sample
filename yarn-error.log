@@ -1,11 +1,11 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\senji\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @typescript-eslint/tslint -D
+  C:\Program Files\nodejs\node.exe C:\Users\seonhyung\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @babel/runtime/helpers/slicedToArray -D
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\PuTTY\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Gpg4win\..\GnuPG\bin;C:\Program Files\MongoDB\Server\4.0\bin;C:\Program Files\nodejs\;C:\Program Files\Java\jdk1.8.0_201\bin;C:\Users\senji\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Heroku\bin;C:\Users\senji\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\senji\AppData\Roaming\npm
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;"C:\Program Files\Java\jdk1.8.0_181\bin;";C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files (x86)\Java\jdk1.8.0_181\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\NSIS\bin;C:\Program Files (x86)\PuTTY\;C:\Users\seonhyung\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft VS Code\bin;C:\Users\seonhyung\AppData\Roaming\npm;C:\Users\seonhyung\AppData\Local\Programs\Microsoft VS Code\bin;"C:\Program Files\Java\jdk1.8.0_181\bin;";C:\Program Files\heroku\bin
 
 Yarn version: 
-  1.6.0
+  1.13.0
 
 Node version: 
   8.11.2
@@ -14,15 +14,15 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@typescript-eslint%2ftslint: Not found
-      at Request.params.callback [as _callback] (C:\Users\senji\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:65327:18)
-      at Request.self.callback (C:\Users\senji\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:133155:22)
+  Error: https://registry.yarnpkg.com/@babel%2fruntime/helpers/slicedToArray: Request "https://registry.yarnpkg.com/@babel%2fruntime/helpers/slicedToArray" returned a 405
+      at Request.params.callback [as _callback] (C:\Users\seonhyung\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66264:18)
+      at Request.self.callback (C:\Users\seonhyung\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:129397:22)
       at emitTwo (events.js:126:13)
       at Request.emit (events.js:214:7)
-      at Request.<anonymous> (C:\Users\senji\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:134138:10)
+      at Request.<anonymous> (C:\Users\seonhyung\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130369:10)
       at emitOne (events.js:116:13)
       at Request.emit (events.js:211:7)
-      at IncomingMessage.<anonymous> (C:\Users\senji\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:134058:12)
+      at IncomingMessage.<anonymous> (C:\Users\seonhyung\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:130291:12)
       at Object.onceWrapper (events.js:313:30)
       at emitNone (events.js:111:20)
 
@@ -54,6 +54,7 @@ npm manifest:
       "typescript": "^3.4.3"
     },
     "devDependencies": {
+      "@babel/plugin-external-helpers": "^7.2.0",
       "@babel/plugin-proposal-class-properties": "^7.4.0",
       "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
       "@babel/plugin-transform-runtime": "^7.4.3",
@@ -309,6 +310,13 @@ Lockfile:
   "@babel/parser@^7.0.0", "@babel/parser@^7.1.0", "@babel/parser@^7.4.0", "@babel/parser@^7.4.3":
     version "7.4.3"
     resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.4.3.tgz#eb3ac80f64aa101c907d4ce5406360fe75b7895b"
+  
+  "@babel/plugin-external-helpers@^7.2.0":
+    version "7.2.0"
+    resolved "https://registry.yarnpkg.com/@babel/plugin-external-helpers/-/plugin-external-helpers-7.2.0.tgz#7f4cb7dee651cd380d2034847d914288467a6be4"
+    integrity sha512-QFmtcCShFkyAsNtdCM3lJPmRe1iB+vPZymlB4LnDIKEBj2yKQLQKtoxXxJ8ePT5fwMl4QGg303p4mB0UsSI2/g==
+    dependencies:
+      "@babel/helper-plugin-utils" "^7.0.0"
   
   "@babel/plugin-proposal-async-generator-functions@^7.2.0":
     version "7.2.0"
